@@ -1,19 +1,31 @@
+"use client";
+
+import { signIn } from "next-auth/react";
 import Link from "next/link";
 
-const ButtonLogin = ({ isLoggedIn, name, extraStyle }) => {
-  console.log(extraStyle);
+const ButtonLogin = ({ session, extraStyle }) => {
+  const dashboardUrl = "/dashboard";
 
-  if (isLoggedIn) {
+  if (session) {
     return (
       <Link
-        href="/dashboard"
+        href={dashboardUrl}
         className={`btn btn-primary ${extraStyle ? extraStyle : ""}`}
       >
-        Welcome back {name}
+        Welcome back {session.user.name || "friend"}
       </Link>
     );
   }
-  return <button>Login</button>;
+  return (
+    <button
+      onClick={() => {
+        signIn(undefined, { callbackUrl: dashboardUrl });
+      }}
+      className={`btn btn-primary ${extraStyle ? extraStyle : ""}`}
+    >
+      Get started
+    </button>
+  );
 };
 
 export default ButtonLogin;
