@@ -25,6 +25,13 @@ export async function POST(req) {
 
     const user = await User.findById(session.user.id);
 
+    if (!user.hasAccess) {
+      return NextResponse.json(
+        {error: "Please subscribe first"},
+        {status: 403}
+      )
+    }
+
     const board = await Board.create({
       userId: user._id,
       name: body.name,
@@ -63,6 +70,14 @@ export async function DELETE(req) {
     });
 
     const user = await User.findById(session?.user?.id);
+
+    if (!user.hasAccess) {
+      return NextResponse.json(
+        {error: "Please subscribe first"},
+        {status: 403}
+      )
+    }
+
     user.boards = user.boards.filter((id) => id.toString() !== boardId);
     await user.save();
 
