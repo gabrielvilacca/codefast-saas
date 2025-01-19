@@ -22,12 +22,12 @@ export async function POST(req) {
 
     const stripe = new Stripe(process.env.STRIPE_API_KEY);
 
-    const stripeCheckoutPoral = await stripe.billingPortal.sessions.create({
-        customer: user.customerId,
-        return_url: body.returnUrl
-    })
+    const stripeCustomerPortal = await stripe.billingPortal.sessions.create({
+      customer: user.customerId,
+      return_url: body.returnUrl,
+    });
 
-    return NextResponse.json({ url: stripeCheckoutSession.url });
+    return NextResponse.json({ url: stripeCustomerPortal.url });
   } catch (e) {
     return NextResponse.json({ error: e.message }, { status: 500 });
   }
