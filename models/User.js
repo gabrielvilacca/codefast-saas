@@ -15,7 +15,7 @@ const userSchema = new mongoose.Schema({
     type: String,
   },
 
-  hasAcess: {
+  hasAccess: {
     type: Boolean,
     default: false,
   },
